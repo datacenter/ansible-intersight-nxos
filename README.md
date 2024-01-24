@@ -1,5 +1,6 @@
 # ansible-intersight-nxos
 Ansible playbook to claim nxos devices in Intersight
+Supported as per NXOS 10.2.6
 
 # How to run
 
@@ -26,7 +27,7 @@ ansible-playbook  -i inventory.yaml  playbook.yaml
 See collections/requirements.yml and install with ansible-galaxy
 
 ```
-ansible-galaxy install -r requirements.yml
+ansible-galaxy install -r collections/requirements.yml
 ```
 
 # Intersight
