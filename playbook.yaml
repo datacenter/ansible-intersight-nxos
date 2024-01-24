@@ -1,0 +1,93 @@
+
+- hosts: all
+  gather_facts: no
+
+  tasks:
+  - name: Configure proxy
+    nxos_config:
+      lines:
+      - intersight proxy {{intersight_proxy_host}} port {{intersight_proxy_port}}
+    when:
+    - intersight_proxy_host is defined
+    - intersight_proxy_port is defined
+  - name: Unconfigure proxy
+    nxos_config:
+      lines:
+      - no intersight proxy
+    when:
+    - intersight_proxy_host is not defined or intersight_proxy_port is not defined
+
+  - name: Configure src interface
+    nxos_config:
+      lines:
+      - intersight source-interface {{intersight_src}}
+    when:
+    - intersight_src is defined
+  - name: Unconfigure src interface
+    nxos_config:
+      lines:
+      - no intersight source-interface
+    when:
+    - intersight_src is not defined
+
+
+  - name: Configure src vrf
+    nxos_config:
+      lines:
+      - intersight use-vrf {{ intersight_vrf }}
+    when:
+    - intersight_vrf is defined
+  - name: Unconfigure src vrf
+    nxos_config:
+      lines:
+      - no intersight use-vrf 
+    when:
+    - intersight_vrf is not defined
+
+  - name: Await connection to Intersight
+    nxos_command:
+      commands:
+      - show system internal intersight info
+    register: intersightInfo
+    retries: 10
+    delay: 10
+    until: intersightInfo.stdout is search("Connecte")
+
+  # retrieve SerialNumber and SecurityToken, will create an ad-hoc dict
+
+  - name: Get show system device-connector claim-info
+    nxos_command:
+      commands:
+      - show system device-connector claim-info
+    register: claiminfo
+
+  - name: Set claiminfoDict
+    set_fact:
+      claiminfoDict: "{{ claiminfoDict | default({}) | combine ({ (item | replace(' ', '')|split(':')| first) : (item | replace(' ', '')|split(':')| last) }) }}"
+    loop: "{{ claiminfo.stdout_lines[0] }}"
+
+  #- name: show claiminfoDict
+  #  debug:
+  #    var: claiminfoDict
+
+  # let's claim
+
+  - name: claim device - PROXY
+    cisco.intersight.intersight_target_claim:
+      device_id: "{{ claiminfoDict.SerialNumber }}"
+      claim_code: "{{ claiminfoDict.SecurityToken }}"
+      state: present
+      api_key_id: "{{ api_key_id }}"
+      api_private_key: "{{ api_private_key }}"
+    environment:
+      https_proxy: "{{internet_proxy_https }}"
+    when: claiminfoDict.Claimstate == "NotClaimed" and internet_proxy_https is defined
+
+  - name: claim device - NO PROXY
+    cisco.intersight.intersight_target_claim:
+      device_id: "{{ claiminfoDict.SerialNumber }}"
+      claim_code: "{{ claiminfoDict.SecurityToken }}"
+      state: present
+      api_key_id: "{{ api_key_id }}"
+      api_private_key: "{{ api_private_key }}"
+    when: claiminfoDict.Claimstate == "NotClaimed" and internet_proxy_https is not defined

@@ -1,0 +1,28 @@
+
+all:
+  hosts:
+    switch1:
+      ansible_host: switch1.foo.com
+      intersight_src: 'Vlan16'
+      intersight_vrf: 'default'
+    switch2:
+      ansible_host: switch2.foo.com
+      intersight_src: 'Vlan16'
+      intersight_vrf: 'default'
+
+  vars:
+      ansible_user: admin
+      ansible_password: password
+      ansible_become: no
+      ansible_become_method: enable
+      ansible_become_pass: password
+      ansible_connection: ansible.netcommon.httpapi
+      ansible_network_os: cisco.nxos.nxos
+
+      intersight_proxy_host: 'proxy.foo.com'
+      intersight_proxy_port: '8080'
+
+      internet_proxy_https: 'http://proxy.foo.com:8080'
+
+      api_key_id: 'my_intersight_api_key'
+      api_private_key: intersight_private_key.txt
