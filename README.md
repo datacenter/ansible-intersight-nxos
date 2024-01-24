@@ -1,7 +1,7 @@
 # ansible-intersight-nxos
 Ansible playbook to claim nxos devices in Intersight
 
-* Available variables
+# Available variables
 
 | Variable | Description |
 | --- | ---|
@@ -12,3 +12,11 @@ Ansible playbook to claim nxos devices in Intersight
 | internet_proxy_https | The proxy to be used for your ansible execution ENV to connect to Intersight |
 | api_key_id | The API key to connect to Intersight|
 | api_private_key | The filename referring to the private key to connect to Intersight |
+
+# Dependencies
+
+See collections/requirements.yml and install with ansible-galaxy
+
+```
+ansible-galaxy install -r requirements.yml
+```
