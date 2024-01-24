@@ -31,4 +31,4 @@ ansible-galaxy install -r requirements.yml
 
 # Intersight
 
-In order to obtain the Intersight API key, login to Intersight (intersight.com), goto System -> Settings -> API Keys and create the required key pair.
+In order to obtain the Intersight API key, login to Intersight (intersight.com), goto System -> Settings -> API Keys and create the required key pair by clicking on "Generate API Key".
