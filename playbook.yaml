@@ -3,6 +3,11 @@
   gather_facts: no
 
   tasks:
+  - name: Enable feature intersight
+    nxos_config:
+      lines:
+      - feature intersight
+
   - name: Configure proxy
     nxos_config:
       lines:
