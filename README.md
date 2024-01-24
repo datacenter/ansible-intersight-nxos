@@ -1,5 +1,5 @@
 # ansible-intersight-nxos
-Ansible playbook to claim nxos devices in Intersight
+Ansible playbook to claim nxos devices in Intersight<br />
 Supported as per NXOS 10.2.6
 
 # How to run
