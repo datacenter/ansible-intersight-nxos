@@ -1,6 +1,14 @@
 # ansible-intersight-nxos
 Ansible playbook to claim nxos devices in Intersight
 
+# How to run
+
+Make sure to update the inventory.yaml file based on the below instructions and install the required dependencies.
+
+```
+ansible-playbook  -i inventory.yaml  playbook.yaml
+```
+
 # Available variables
 
 | Variable | Description |
