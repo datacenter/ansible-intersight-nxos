@@ -16,7 +16,9 @@ all:
       ansible_become: no
       ansible_become_method: enable
       ansible_become_pass: password
-      ansible_connection: ansible.netcommon.httpapi
+      # uncomment below line and comment next line to switch to nxapi
+      #ansible_connection: ansible.netcommon.httpapi
+      ansible_connection: ansible.netcommon.network_cli
       ansible_network_os: cisco.nxos.nxos
 
       intersight_proxy_host: 'proxy.foo.com'
